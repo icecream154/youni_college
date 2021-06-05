@@ -28,11 +28,11 @@
             所在国家: <input type="text" style="width: 100px" id="new-region-country-info">
             中: <input type="text" style="width: 100px" id="new-region-zh">
             英: <input type="text" style="width: 100px" id="new-region-en">
-            <input type="button" value="新增" id="new-region-submit">
+            <input type="button" value="新增" id="new-region-submit" onclick="addRegion()">
             <br>
             删除地区 ————
             地区信息: <input type="text" style="width: 100px" id="del-region-info">
-            <input type="button" value="删除" id="del-region-submit">
+            <input type="button" value="删除" id="del-region-submit" onclick="deleteRegion()">
             <br>
             注意：删除地区后地区下的城市以及城市下的大学将会联级删除，请谨慎操作，遇到问题请联系管理员
             <br>
@@ -43,11 +43,11 @@
             所在地区: <input type="text" style="width: 100px" id="new-city-region-info">
             中: <input type="text" style="width: 100px" id="new-city-zh">
             英: <input type="text" style="width: 100px" id="new-city-en">
-            <input type="button" value="新增" id="new-city-submit">
+            <input type="button" value="新增" id="new-city-submit" onclick="addCity()">
             <br>
             删除城市 ————
             城市信息: <input type="text" style="width: 100px" id="del-city-info">
-            <input type="button" value="删除" id="del-city-submit">
+            <input type="button" value="删除" id="del-city-submit" onclick="deleteCity()">
             <br>
             注意：删除城市后城市下的大学将会联级删除，请谨慎操作，遇到问题请联系管理员
             <br>
@@ -58,11 +58,11 @@
             所在城市: <input type="text" style="width: 100px" id="new-college-city-info">
             中: <input type="text" style="width: 100px" id="new-college-zh">
             英: <input type="text" style="width: 100px" id="new-college-en">
-            <input type="button" value="新增" id="new-city-submit">
+            <input type="button" value="新增" id="new-city-submit" onclick="addCollege()">
             <br>
             删除大学 ————
-            大学信息: <input type="text" style="width: 100px" id="del-city-info">
-            <input type="button" value="删除" id="del-city-submit">
+            大学信息: <input type="text" style="width: 100px" id="del-college-info">
+            <input type="button" value="删除" id="del-city-submit" onclick="deleteCollege()">
         </div>
 
         <h3>查询</h3>
@@ -76,7 +76,7 @@
             <input type="radio" name="query-obj" value="region">地区
             <input type="radio" name="query-obj" value="city">城市
             <input type="radio" name="query-obj" value="college">大学
-            <input type="button" value="查询" id="query-submit">
+            <input type="button" value="查询" id="query-submit" onclick="queryFunc()">
         </div>
 
         <div id="query-result">
@@ -96,6 +96,7 @@
 
     function buildCountryForm(data) {
         data = JSON.parse(data)
+        console.log(data)
         let formHtml = "<table><tr><th>国家ID</th><th>国家码</th><th>中文名</th><th>英文名</th></tr>";
         for (let countryIndex in data) {
             let countryItem = data[countryIndex]
@@ -111,15 +112,55 @@
     }
 
     function buildRegionForm(data) {
-
+        data = JSON.parse(data)
+        let formHtml = "<table><tr><th>地区ID</th><th>国家中文名</th><th>国家英文名</th><th>中文名</th><th>英文名</th></tr>";
+        for (let regionIndex in data) {
+            let regionItem = data[regionIndex]
+            formHtml += "<tr>";
+            formHtml += "<td>" + regionItem['region_id'] + "</td>";
+            formHtml += "<td>" + regionItem['country_name_zh'] + "</td>";
+            formHtml += "<td>" + regionItem['country_name_en'] + "</td>";
+            formHtml += "<td>" + regionItem['name_zh'] + "</td>";
+            formHtml += "<td>" + regionItem['name_en'] + "</td>";
+            formHtml += "</tr>";
+        }
+        formHtml += "</table>";
+        $("#query-result").html(formHtml);
     }
 
     function buildCityForm(data) {
-
+        data = JSON.parse(data)
+        let formHtml = "<table><tr><th>城市ID</th><th>地区中文名</th><th>地区英文名</th><th>中文名</th><th>英文名</th></tr>";
+        for (let cityIndex in data) {
+            let cityItem = data[cityIndex]
+            formHtml += "<tr>";
+            formHtml += "<td>" + cityItem['city_id'] + "</td>";
+            formHtml += "<td>" + cityItem['region_name_zh'] + "</td>";
+            formHtml += "<td>" + cityItem['region_name_en'] + "</td>";
+            formHtml += "<td>" + cityItem['name_zh'] + "</td>";
+            formHtml += "<td>" + cityItem['name_en'] + "</td>";
+            formHtml += "</tr>";
+        }
+        formHtml += "</table>";
+        $("#query-result").html(formHtml);
     }
 
     function buildCollegeForm(data) {
-
+        data = JSON.parse(data)
+        console.log(data)
+        let formHtml = "<table><tr><th>学校ID</th><th>城市中文名</th><th>城市英文名</th><th>中文名</th><th>英文名</th></tr>";
+        for (let collegeIndex in data) {
+            let collegeItem = data[collegeIndex]
+            formHtml += "<tr>";
+            formHtml += "<td>" + collegeItem['college_id'] + "</td>";
+            formHtml += "<td>" + collegeItem['city_name_zh'] + "</td>";
+            formHtml += "<td>" + collegeItem['city_name_en'] + "</td>";
+            formHtml += "<td>" + collegeItem['name_zh'] + "</td>";
+            formHtml += "<td>" + collegeItem['name_en'] + "</td>";
+            formHtml += "</tr>";
+        }
+        formHtml += "</table>";
+        $("#query-result").html(formHtml);
     }
 
     let queryFunc = function () {
@@ -186,6 +227,90 @@
 
     }
 
-    $('#query-submit').click(queryFunc())
+    function addRegion(){
+        var country=$("#new-region-country-info").val();
+        var name_zh=$("#new-region-zh").val();
+        var name_en=$("#new-region-en").val();
+        $.post("/youni/region/add", {
+                    'country_info':country,
+                    'name_zh':name_zh,
+                    'name_en':name_en,
+                }, function(data, status) {
+                    console.log(data);
+                    console.log(status);
+                    if (status == 'success') {
+                        alert('添加地区成功');
+                        queryFunc();
+                    } else {
+                        alert('添加地区失败，可能已经添加过该地区');
+                    }
+
+                })
+    }
+    function deleteRegion(){
+        var delete_info=$("#del-region-info").val()
+        $.post("/youni/region/delete",{
+            'region_info':delete_info
+        },function(data,status){
+            if(status=="success"){alert("删除成功");}
+            else alert('删除失败');
+            queryFunc();
+        })
+    }
+    function addCity(){
+        var region=$("#new-city-region-info").val();
+        var name_zh=$("#new-city-zh").val();
+        var name_en=$("#new-city-en").val();
+        $.post("/youni/city/add", {
+                    'region_info':region,
+                    'name_zh':name_zh,
+                    'name_en':name_en,
+                }, function(data, status) {
+                    if (status == 'success') {
+                        alert('添加城市成功');
+                        queryFunc();
+                    } else {
+                        alert('添加城市失败，可能已经添加过该城市')
+                    }
+
+                })
+    }
+    function deleteCity(){
+        var delete_info=$("#del-city-info").val()
+        $.post("/youni/city/delete",{
+            'city_info':delete_info
+        },function(data,status){
+            if(status=="success"){alert("删除成功");queryFunc();}
+            else alert('删除失败');
+        })
+    }
+    function addCollege(){
+        var city=$("#new-college-city-info").val();
+        var name_zh=$("#new-college-zh").val();
+        var name_en=$("#new-college-en").val();
+        $.post("/youni/college/add", {
+                    'city_info':city,
+                    'name_zh':name_zh,
+                    'name_en':name_en,
+                }, function(data, status) {
+                    if (status == 'success') {
+                        alert('添加学校成功');
+                        queryFunc();
+                    } else {
+                        alert('添加学校失败，可能已经添加过该学校')
+                    }
+
+                })
+    }
+    function deleteCollege(){
+        var delete_info=$("#del-college-info").val()
+        $.post("/youni/college/delete",{
+            'college_info':delete_info
+        },function(data,status){
+            if(status=="success"){alert("删除成功");}
+            else alert('删除失败');
+            queryFunc();
+        })
+    }
 
 </script>

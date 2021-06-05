@@ -18,7 +18,7 @@ def get_all_colleges(language: str = None):
 
 def get_city_colleges(city: City, language: str = None):
     college_list = []
-    colleges = city.college_set
+    colleges = city.college_set.all()
     for college in colleges:
         college_list.append(college.to_dict(language))
     return college_list
@@ -26,7 +26,7 @@ def get_city_colleges(city: City, language: str = None):
 
 def get_region_colleges(region: Region, language: str = None):
     college_list = []
-    cities = region.city_set
+    cities = region.city_set.all()
     for city in cities:
         college_list.extend(get_city_colleges(city, language))
     return college_list
@@ -34,7 +34,7 @@ def get_region_colleges(region: Region, language: str = None):
 
 def get_country_colleges(country: Country, language: str = None):
     college_list = []
-    regions = country.region_set
+    regions = country.region_set.all()
     for region in regions:
         college_list.extend(get_region_colleges(region, language))
     return college_list
@@ -88,7 +88,7 @@ def add_college(request):
         college = College(city=city, name_zh=name_zh, name_en=name_en)
         college.save()
         return HttpResponse(json.dumps({
-            'message': 'add country success',
+            'message': 'add college success',
             'college': college.to_dict()
         }))
     return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
@@ -100,7 +100,6 @@ def del_college(request):
         college_info = parameter_dict['college_info']
     except KeyError:
         return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
-
     college = get_entity_by_info(college_info, College)
     name_zh, name_en = college.name_zh, college.name_en
     if college:

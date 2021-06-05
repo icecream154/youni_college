@@ -68,7 +68,7 @@ def query_regions(request):
         country = get_entity_by_info(country_info, Country)
         if country:
             regions = []
-            region_list = country.region_set
+            region_list = country.region_set.all()
             for region in region_list:
                 regions.append(region.to_dict(language))
             return HttpResponse(json.dumps(regions))

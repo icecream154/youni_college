@@ -34,7 +34,6 @@ def query_countries(request):
         countries = []
         country = get_entity_by_info(country_info, Country)
         if country:
-            print(country.to_dict(language))
             countries.append(country.to_dict(language))
         return HttpResponse(json.dumps(countries))
 

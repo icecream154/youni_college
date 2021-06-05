@@ -10,7 +10,7 @@ class College(models.Model):
     name_en = models.CharField(max_length=100)
     name_zh = models.CharField(max_length=100)
 
-    def to_dict(self, language: str):
+    def to_dict(self, language: str = None):
         if language == 'en':
             dictionary = {
                 'college_id': self.college_id,

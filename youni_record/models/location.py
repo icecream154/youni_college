@@ -8,7 +8,7 @@ class Country(models.Model):
     name_zh = models.CharField(max_length=100, unique=True)
     sort = models.IntegerField(default=0)
 
-    def to_dict(self, language: str = 'zh'):
+    def to_dict(self, language: str = None):
         if language == 'en':
             dictionary = {
                 'country_id': self.country_id,
@@ -43,7 +43,7 @@ class Region(models.Model):
     name_zh = models.CharField(max_length=100, unique=True)
     sort = models.IntegerField(default=0)
 
-    def to_dict(self, language: str = 'zh'):
+    def to_dict(self, language: str = None):
         if language == 'en':
             dictionary = {
                 'region_id': self.region_id,
@@ -82,7 +82,7 @@ class City(models.Model):
     name_zh = models.CharField(max_length=100, unique=True)
     sort = models.IntegerField(default=0)
 
-    def to_dict(self, language: str = 'zh'):
+    def to_dict(self, language: str = None):
         if language == 'en':
             dictionary = {
                 'city_id': self.city_id,
