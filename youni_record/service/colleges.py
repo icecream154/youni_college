@@ -60,14 +60,14 @@ def query_colleges(request):
     if region_info:
         region = get_entity_by_info(region_info, Region)
         if region:
-            return HttpResponse(json.dumps(get_country_colleges(region, language)))
+            return HttpResponse(json.dumps(get_region_colleges(region, language)))
         else:
             return HttpResponse(json.dumps([]))
 
     if city_info:
         city = get_entity_by_info(city_info, City)
         if city:
-            return HttpResponse(json.dumps(get_country_colleges(city, language)))
+            return HttpResponse(json.dumps(get_city_colleges(city, language)))
         else:
             return HttpResponse(json.dumps([]))
 
@@ -101,9 +101,10 @@ def del_college(request):
     except KeyError:
         return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
     college = get_entity_by_info(college_info, College)
-    name_zh, name_en = college.name_zh, college.name_en
     if college:
+        name_zh, name_en = college.name_zh, college.name_en
         college.delete()
         return HttpResponse(json.dumps({
             'message': 'delete college [' + name_zh + '][' + name_en + '] success',
         }))
+    return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))

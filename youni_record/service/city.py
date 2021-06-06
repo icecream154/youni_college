@@ -33,13 +33,14 @@ def del_city(request):
         city_info = parameter_dict['city_info']
     except KeyError:
         return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
-    city = get_entity_by_info(city_info,City)
-    name_zh, name_en = city.name_zh, city.name_en
+    city = get_entity_by_info(city_info, City)
     if city:
+        name_zh, name_en = city.name_zh, city.name_en
         city.delete()
         return HttpResponse(json.dumps({
             'message': 'delete city [' + name_zh + '][' + name_en + '] success',
         }))
+    return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
 
 def query_cites(request):

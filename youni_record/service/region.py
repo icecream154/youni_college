@@ -35,13 +35,13 @@ def del_region(request):
         return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
     region = get_entity_by_info(region_info, Region)
-    name_zh, name_en = region.name_zh, region.name_en
     if region:
+        name_zh, name_en = region.name_zh, region.name_en
         region.delete()
         return HttpResponse(json.dumps({
             'message': 'delete region [' + name_zh + '][' + name_en + '] success',
         }))
-
+    return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
 def query_regions(request):
     parameter_dict = fetch_parameter_dict(request, 'GET')

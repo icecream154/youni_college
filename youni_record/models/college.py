@@ -47,10 +47,10 @@ class College(models.Model):
                 'city_name_zh': self.city.name_zh,
                 'region_name_zh': self.city.region.name_zh,
                 'country_name_zh': self.city.region.country.name_zh,
-                'name_en': self.name_zh,
-                'city_name_en': self.city.name_zh,
-                'region_name_en': self.city.region.name_zh,
-                'country_name_en': self.city.region.country.name_zh,
+                'name_en': self.name_en,
+                'city_name_en': self.city.name_en,
+                'region_name_en': self.city.region.name_en,
+                'country_name_en': self.city.region.country.name_en,
                 'sort': self.sort
             }
             return dictionary
