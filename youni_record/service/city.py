@@ -2,11 +2,13 @@ import json
 
 from django.http import HttpResponseBadRequest, HttpResponse
 
-from youni_record.models.location import Region, City
+from youni_record.models.location import Region, City, Country
+from youni_record.service.database_backup import backup
 from youni_record.utils.request_processor import fetch_parameter_dict, EM_INVALID_OR_MISSING_PARAMETERS
 from youni_record.utils.retrive import get_entity_by_info
 
 
+@backup
 def add_city(request):
     parameter_dict = fetch_parameter_dict(request, 'POST')
     try:
@@ -28,6 +30,7 @@ def add_city(request):
     return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
 
+@backup
 def del_city(request):
     parameter_dict = fetch_parameter_dict(request, 'POST')
     try:
@@ -44,9 +47,35 @@ def del_city(request):
     return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
 
+def get_all_cities(language: str = None):
+    city_list = []
+    countries = Country.objects.all()
+    for country in countries:
+        city_list.extend(get_country_cities(country, language))
+    return city_list
+
+
+def get_region_cities(region: Region, language: str = None):
+    city_list = []
+    cities = region.city_set.all()
+    for city in cities:
+        city_list.append(city.to_dict(language))
+    return city_list
+
+
+def get_country_cities(country: Country, language: str = None):
+    city_list = []
+    regions = country.region_set.all()
+    for region in regions:
+        city_list.extend(get_region_cities(region, language))
+    return city_list
+
+
 def query_cites(request):
     parameter_dict = fetch_parameter_dict(request, 'GET')
     language = parameter_dict.get('language', None)
+    country_info = parameter_dict.get('country_info', None)
+    country_info = None if country_info == '' else country_info
     region_info = parameter_dict.get('region_info', None)
     region_info = None if region_info == '' else region_info
     city_info = parameter_dict.get('city_info', None)
@@ -59,19 +88,18 @@ def query_cites(request):
             cities.append(city.to_dict(language))
         return HttpResponse(json.dumps(cities))
 
-    if not region_info:
-        cities = []
-        city_list = City.objects.all()
-        for city in city_list:
-            cities.append(city.to_dict(language))
-        return HttpResponse(json.dumps(cities))
-    else:
+    if region_info:
         region = get_entity_by_info(region_info, Region)
         if region:
-            cities = []
-            city_list = region.city_set
-            for city in city_list:
-                cities.append(city.to_dict(language))
-            return HttpResponse(json.dumps(cities))
+            return HttpResponse(json.dumps(get_region_cities(region, language)))
         else:
             return HttpResponse(json.dumps([]))
+
+    if country_info:
+        country = get_entity_by_info(country_info, Country)
+        if country:
+            return HttpResponse(json.dumps(get_country_cities(country, language)))
+        else:
+            return HttpResponse(json.dumps([]))
+
+    return HttpResponse(json.dumps(get_all_cities(language)))

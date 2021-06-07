@@ -3,10 +3,12 @@ import json
 from django.http import HttpResponseBadRequest, HttpResponse
 
 from youni_record.models.location import Country, Region
+from youni_record.service.database_backup import backup
 from youni_record.utils.request_processor import fetch_parameter_dict, EM_INVALID_OR_MISSING_PARAMETERS
 from youni_record.utils.retrive import get_entity_by_info
 
 
+@backup
 def add_region(request):
     parameter_dict = fetch_parameter_dict(request, 'POST')
     try:
@@ -27,6 +29,7 @@ def add_region(request):
     return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
 
+@backup
 def del_region(request):
     parameter_dict = fetch_parameter_dict(request, 'POST')
     try:

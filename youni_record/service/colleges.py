@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 
 from youni_record.models.college import College
 from youni_record.models.location import *
+from youni_record.service.database_backup import backup
 from youni_record.utils.request_processor import fetch_parameter_dict, EM_INVALID_OR_MISSING_PARAMETERS
 from youni_record.utils.retrive import get_entity_by_info
 
@@ -50,10 +51,10 @@ def query_colleges(request):
     city_info = parameter_dict.get('city_info', None)
     city_info = None if city_info == '' else city_info
 
-    if country_info:
-        country = get_entity_by_info(country_info, Country)
-        if country:
-            return HttpResponse(json.dumps(get_country_colleges(country, language)))
+    if city_info:
+        city = get_entity_by_info(city_info, City)
+        if city:
+            return HttpResponse(json.dumps(get_city_colleges(city, language)))
         else:
             return HttpResponse(json.dumps([]))
 
@@ -64,16 +65,17 @@ def query_colleges(request):
         else:
             return HttpResponse(json.dumps([]))
 
-    if city_info:
-        city = get_entity_by_info(city_info, City)
-        if city:
-            return HttpResponse(json.dumps(get_city_colleges(city, language)))
+    if country_info:
+        country = get_entity_by_info(country_info, Country)
+        if country:
+            return HttpResponse(json.dumps(get_country_colleges(country, language)))
         else:
             return HttpResponse(json.dumps([]))
 
     return HttpResponse(json.dumps(get_all_colleges(language)))
 
 
+@backup
 def add_college(request):
     parameter_dict = fetch_parameter_dict(request, 'POST')
     try:
@@ -94,6 +96,7 @@ def add_college(request):
     return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
 
+@backup
 def del_college(request):
     parameter_dict = fetch_parameter_dict(request, 'POST')
     try:
