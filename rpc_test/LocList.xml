@@ -2486,7 +2486,9 @@
       <City Name="陵水" Code="A34" />
       <City Name="保亭" Code="A35" />
       <City Name="琼中" Code="A36" />
-      
+      <City Name="西沙群岛" Code="A37" />
+      <City Name="南沙群岛" Code="A38" />
+      <City Name="中沙群岛" Code="A39" />
     </State>
     <State Name="重庆" Code="50">
       <City Name="万州" Code="1" />

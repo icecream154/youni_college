@@ -16,6 +16,7 @@ def add_city(request):
     except KeyError:
         return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
+    print('[region]: %s [city_en]: %s [city_zh]: %s' % (region_info, name_en, name_zh))
     region = get_entity_by_info(region_info, Region)
     if region:
         city = City(region=region, name_zh=name_zh, name_en=name_en)

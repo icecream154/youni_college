@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Location>
+﻿<Location>
   <CountryRegion Name="Afghanistan" Code="AFG">
     <State >
       <City Name="Herat" Code="HEA"/>
@@ -4074,7 +4073,7 @@
       <City Name="Dubai" Code="DU"/>
     </State>
   </CountryRegion>
-  <CountryRegion Name="Vereinigtes Königreich" Code="GBR">
+  <CountryRegion Name="United Kingdom" Code="GBR">
     <State Name="England" Code="ENG">
       <City Name="Bath" Code="BAS"/>
       <City Name="Birmingham" Code="BIR"/>
@@ -4147,7 +4146,7 @@
       <City Name="Swansea" Code="SWA"/>
     </State>
   </CountryRegion>
-  <CountryRegion Name="Vereinigte Staaten von Amerika" Code="USA">
+  <CountryRegion Name="United States of America" Code="USA">
     <State Name="Alabama" Code="AL">
       <City Name="Birmingham" Code="BHM"/>
       <City Name="Mobile" Code="MOB"/>

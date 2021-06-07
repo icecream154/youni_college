@@ -1,3 +1,4 @@
+from rpc_test.rpc_request import add_country
 from rpc_test.rpc_utils import *
 
 
@@ -7,14 +8,6 @@ def load_country_json():
     # load_dict = json.loads(raw_content)
     # print(load_dict)
     return json.loads(raw_content)['countries']
-
-
-def add_country(code: str, name_en: str, name_zh: str):
-    return do_rpc_post_request('country/add', data={
-        'code': code,
-        'name_en': name_en,
-        'name_zh': name_zh
-    })
 
 
 if __name__ == '__main__':

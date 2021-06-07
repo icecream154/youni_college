@@ -39,8 +39,8 @@ class Country(models.Model):
 class Region(models.Model):
     region_id = models.AutoField(primary_key=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    name_en = models.CharField(max_length=100, unique=True)
-    name_zh = models.CharField(max_length=100, unique=True)
+    name_en = models.CharField(max_length=100)
+    name_zh = models.CharField(max_length=100)
     sort = models.IntegerField(default=0)
 
     def to_dict(self, language: str = None):
@@ -78,8 +78,8 @@ class Region(models.Model):
 class City(models.Model):
     city_id = models.AutoField(primary_key=True)
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
-    name_en = models.CharField(max_length=100, unique=True)
-    name_zh = models.CharField(max_length=100, unique=True)
+    name_en = models.CharField(max_length=100)
+    name_zh = models.CharField(max_length=100)
     sort = models.IntegerField(default=0)
 
     def to_dict(self, language: str = None):

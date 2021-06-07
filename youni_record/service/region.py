@@ -43,6 +43,7 @@ def del_region(request):
         }))
     return HttpResponseBadRequest(json.dumps({'message': EM_INVALID_OR_MISSING_PARAMETERS}))
 
+
 def query_regions(request):
     parameter_dict = fetch_parameter_dict(request, 'GET')
     language = parameter_dict.get('language', None)
